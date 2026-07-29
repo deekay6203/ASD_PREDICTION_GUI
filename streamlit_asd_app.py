@@ -2,16 +2,27 @@ import streamlit as st
 import pandas as pd
 import joblib
 import os
+import shap
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-model = joblib.load(os.path.join(BASE_DIR, "asd_best_model.pkl"))
-explainer = joblib.load(os.path.join(BASE_DIR, "asd_shap_explainer.pkl"))
-feature_columns = joblib.load(os.path.join(BASE_DIR, "asd_feature_columns.pkl"))
+model = joblib.load(
+    os.path.join(BASE_DIR, "asd_best_model.pkl")
+)
+
+explainer = shap.TreeExplainer(model)
+
+feature_columns = joblib.load(
+    os.path.join(BASE_DIR, "asd_feature_columns.pkl")
+)
+
 label_encoders = joblib.load(
     os.path.join(BASE_DIR, "asd_label_encoders.pkl")
 )
-raw_df = pd.read_csv(os.path.join(BASE_DIR, "autism_screening.csv"))
+
+raw_df = pd.read_csv(
+    os.path.join(BASE_DIR, "autism_screening.csv")
+)
 
 st.set_page_config(page_title="ASD Prediction System", layout="wide")
 
